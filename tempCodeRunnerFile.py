@@ -2,7 +2,6 @@ import os
 import shutil
 import pytesseract
 from pdf2image import convert_from_path
-import re
 
 #Caminho da pasta principal do projeto
 pasta_principal = "C:/VerificadorDePDF"
@@ -40,37 +39,10 @@ def orc_pdf(pdf_path):
       texto_extraido += texto
       print(f"Texto extraído da página {i + 1}:")
       print(texto)
-
-# Variaveis que vão amarzenar as informações solicitadas
-    nota_fiscal = buscar_nota_fiscal(texto_extraido)
-    cnpj = buscar_cnpj(texto_extraido)
-    valor_total = buscar_valor_total(texto_extraido)
-
     return texto_extraido
 
   except Exception as e:
     print(f"Ocorreu um erro: {e}")
-
-# Função para buscar a Nota fiscal Depois de uma frase.
-def buscar_nota_fiscal(texto):
-    match = re.search(r'PREFEITURA DO MUNICIPIO DE SAO PAULO\s*(\d{8})', texto)
-    if match:
-        return match.group(1)
-    return "Nota Fiscal não encontrada."
-
-#Função para buscar o CNPJ após localizar uma palavra.
-def buscar_cnpj(texto):
-  match = re.search(r'CPF/CNPJ:\s*([\d/.-]+)', texto)
-  if match:
-    return match.group(1)
-  return "CNPJ não encontrado"
-
-# Função para buscar o Valor após uma palavra.
-def buscar_valor_total(texto):
-  match = re.search(r'VALOR TOTAL RECEBIDO =\s*R\$\s*([\d,\.]+)', texto)
-  if match:
-    return match.group(1)
-  return "Valor não encontrado"
 
 #Função que filtra arquivos .PDF
 def processar_pdfs():

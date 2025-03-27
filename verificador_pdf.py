@@ -30,6 +30,67 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 # Mostrando o caminho onde se encontra o poppler
 poppler_path = r"C:\poppler\Release-24.08.0-0\poppler-24.08.0\Library\bin"
 
+# Dicionário com os CNPJ das lojas e o nome que pertence a ele.
+cnpj_loja = {
+    "35.689.008/0001-91": "BISCOITÊ FÁBRICA",
+    "35.689.008/0002-72": "BISCOITÊ INDUSTRIA - RJ",
+    "35.689.008/0003-53": "BISCOITÊ GALPÃO",
+    "31.339.275/0001-88": "BISCOITÊ FRANCHISING - Antiga",
+    "05.505.945/0001-89": "BISCOITÊ FRANCHISING - Atual",
+    "13.830.348/0001-58": "BISCOITÊ VILLA LOBOS",
+    "13.830.348/0002-39": "BISCOITÊ ALPHAVILLE",
+    "21.768.856/0001-81": "BISCOITÊ MORUMBI/QSQ",
+    "21.768.856/0002-62": "BISCOITÊ MORUMBI TOWN",
+    "33.707.451/0001-12": "BISCOITÊ TOP CENTER",
+    "35.274.006/0001-31": "BISCOITÊ MORUMBI PARK (SP MARKET)",
+    "35.274.006/0002-12": "BISCOITÊ MOOCA",
+    "31.131.092/0001-72": "BISCOITÊ VILA OLIMPIA",
+    "31.131.092/0002-53": "BISCOITÊ JK",
+    "39.267.229/0001-22": "BISCOITÊ CENTER NORTE",
+    "39.267.229/0002-03": "BISCOITÊ PLAZA SUL",
+    "39.267.229/0003-94": "BISCOITÊ ELDORADO",
+    "39.267.229/0004-75": "BISCOITÊ TAMBORÉ",
+    "39.267.229/0005-56": "BISCOITÊ SOROCABA",
+    "39.267.229/0006-37": "BISCOITÊ METRÓPOLE (CIDADE JARDIM)",
+    "39.267.229/0007-18": "BISCOITÊ MOOCA(Center Norte)",
+    "39.267.229/0008-07": "BISCOITÊ TABOÃO",
+    "39.267.229/0009-80": "BISCOITÊ TRAILER/EVENTOS",
+    "39.267.229/0010-13": "BISCOITÊ PAMPLONA",
+    "39.267.229/0011-02": "BISCOITÊ VILLA LOBOS(Center Norte)",
+    "39.267.229/0012-85": "BISCOITÊ ALPHAVILLE(Center Norte)",
+    "39.267.229/0013-66": "BISCOITÊ MORUMBI/QSQ(Center Norte)",
+    "39.267.229/0014-47": "BISCOITÊ MORUMBI TOWN(Center Norte)",
+    "39.267.229/0015-28": "BISCOITÊ TOP CENTER (COLINAS)",
+    "39.267.229/0016-09": "BISCOITÊ BOURBON (MORUMBI PARK)",
+    "39.267.229/0017-90": "BISCOITÊ VILA OLIMPIA(Center Norte)",
+    "39.267.229/0018-70": "BISCOITÊ AEROPORTO DE GUARULHOS (JK)",
+    "39.267.229/0019-51": "BISCOITÊ TIETÊ PLAZA",
+    "39.267.229/0020-95": "BISCOITÊ CATARINA FASHION OUTLET (PRAIA MAR)",
+    "39.267.229/0021-76": "BISCOITÊ NORTE SHOPPING",
+    "39.267.229/0022-57": "BISCOITÊ NITEROI",
+    "39.267.229/0023-38": "BISCOITÊ LEBLON",
+    "39.267.229/0024-19": "BISCOITE INTERNATIONAL GRU",
+    "39.267.229/0025-08": "BISCOITE NOVA AMÉRICA",
+    "39.267.229/0026-80": "BISCOITE TIJUCA (RIO SUL)",
+    "39.267.229/0027-61": "BISCOITÊ JARDIM SUL",
+    "39.267.229/0028-42": "BISCOITÊ RIO MAR",
+    "39.267.229/0029-23": "BISCOITÊ BUTANTÃ",
+    "39.267.229/0030-67": "BISCOITÊ ANÁLIA FRANCO",
+    "39.267.229/0031-48": "BISCOITÊ SÃO BERNARDO DO CAMPO",
+    "39.267.229/0032-29": "BISCOITÊ CASA CULTURA / HIGIENOPOLIS",
+    "39.267.229/0033-00": "BISCOITÊ PENHA",
+    "39.267.229/0034-90": "BISCOITÊ HCOR",
+    "31.505.237/0001-58": "BISCOITÊ CAMPINAS",
+    "31.505.237/0002-39": "BISCOITÊ CAMPINAS GALLERIA",
+    "31.505.237/0003-10": "BISCOITÊ CAMPINAS PATIO PTA",
+    "46.738.045/0001-69": "BISCOITÊ CAMBUI",
+    "46.204.143/0001-16": "BISCOITÊ DOM PEDRO",
+    "46.204.143/0002-05": "BISCOITÊ CAMPINAS(FILIAL)",
+    "46.204.143/0003-88": "BISCOITÊ CAMPINAS GALLERIA(FILIAL)",
+    "46.204.143/0004-69": "BISCOITÊ CAMPINAS PATIO PTA(FILIAL)",
+    "46.204.143/0005-40": "BISCOITÊ CAMBUI(FILIAL)"
+}
+
 # Função que converte a imagem em texto e extrai as informações e coloca na variável texto_extraido
 def orc_pdf(pdf_path):
     try:
@@ -77,8 +138,12 @@ def buscar_valor_total(texto):
 
 # Função que renomeia o arquivo PDF
 def renomear_arquivo(pdf_path, numero_nota, cnpj, valor_total):
+    
+    # Variavel que recebe a Conversão do CNPJ em nome da Loja.
+    nome_loja = cnpj_loja.get(cnpj, "Loja desconhecida")
+
     # Remover caracteres inválidos no nome do arquivo
-    novo_nome = f"NF_{numero_nota}_CNPJ_{cnpj}_VALOR_{valor_total}.pdf"
+    novo_nome = f"NFs{numero_nota}_{nome_loja}_R${valor_total}.pdf"
     caracteres_invalidos = r'\/:*?"<>|'
     for char in caracteres_invalidos:
         novo_nome = novo_nome.replace(char, '_')

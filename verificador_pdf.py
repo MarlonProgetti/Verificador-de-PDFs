@@ -124,7 +124,8 @@ def buscar_nota_fiscal(texto):
 
 # Função para buscar o CNPJ após localizar uma palavra
 def buscar_cnpj(texto):
-    cnpjs = re.findall(r'CPF/CNPJ:\s*([\d/.-]+)', texto)
+    sem_espaco = re.sub(r'\s+', '', texto) # Correção de Bug dos Espaços no CNPJ
+    cnpjs = re.findall(r'CPF/CNPJ:\s*([\d/.-]+)', sem_espaco)
     if len(cnpjs) >= 2:
         return cnpjs[1]  # Retorna o segundo CNPJ
     return "CNPJ não encontrado"
